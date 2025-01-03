@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mallcloud.init.mapper.UserMapper">
+    <insert id="userRegister">
+        INSERT
+        INTO users (username,password,email)
+        VALUES (#{userAccount},#{hashPassword},#{email})
+    </insert>
+
+    <!-- 批量删除用户-->
+    <delete id="deleteUserByIds">
+        DELETE
+        FROM users
+        WHERE user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+    <!-- 删除单个用户-->
+    <delete id="deleteUserById">
+        DELETE
+        FROM users
+        WHERE user_id = #{id}
+    </delete>
+
+    <!-- 登录-->
+    <select id="selectWithUserAccount" resultType="com.mallcloud.init.model.entity.User">
+        SELECT
+        user_id,username,password
+        FROM users
+        <where>
+            <if test="username != null and username != ''">
+                username = #{username}
+            </if>
+            <if test="password != null and password != ''">
+                AND password = #{password}
+            </if>
+        </where>
+    </select>
+
+    <!-- 根据账号获取用户信息-->
+    <select id="getUserByAccount" resultType="com.mallcloud.init.model.entity.User">
+        SELECT
+        user_id,username,password
+        FROM users
+        <where>
+            <if test="username != null and username != ''">
+                username = #{username}
+            </if>
+        </where>
+    </select>
+
+    <!-- 根据用户id获取用户信息-->
+    <select id="getUserInfo" resultType="com.mallcloud.init.model.entity.User">
+        SELECT *
+        FROM users
+        WHERE username = #{userAccount}
+    </select>
+
+    <!-- 根据用户id获取用户信息-->
+    <select id="getUserInfoById" resultType="com.mallcloud.init.model.entity.User">
+        SELECT *
+        FROM users
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 分页查询用户-->
+    <select id="selectUsersByPage" resultType="com.mallcloud.init.model.entity.User">
+        SELECT *
+        FROM users
+        LIMIT #{offset},#{size}
+    </select>
+
+</mapper>

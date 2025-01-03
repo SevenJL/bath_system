@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mallcloud.init.mapper.StudentMapper">
+
+    <resultMap id="BaseResultMap" type="com.mallcloud.init.model.entity.Student">
+        <id property="studentId" column="student_id" jdbcType="INTEGER"/>
+        <result property="studentNumber" column="student_number" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="grade" column="grade" jdbcType="VARCHAR"/>
+        <result property="studentClass" column="class" jdbcType="VARCHAR"/>
+    </resultMap>
+    <insert id="insertStudent">
+        insert into student
+            (student_number, name, grade, student_class)
+        values (#{studentNumber}, #{name}, #{grade}, #{studentClass})
+    </insert>
+    <update id="updateStudentById">
+        update student
+        set name           = #{name},
+            grade          = #{grade},
+            student_class  = #{studentClass},
+            student_number = #{studentNumber}
+        where student_id = #{studentId}
+    </update>
+    <delete id="deleteStudentById">
+        delete
+        from student
+        where student_id = #{studentId}
+    </delete>
+    <select id="getStudentsByPage" resultType="com.mallcloud.init.model.entity.Student">
+        select student_id     as studentId,
+               name,
+               grade,
+               student_class  as studentClass,
+               student_number as studentNumber
+        from student
+        limit #{offset},#{size}
+    </select>
+    <select id="getStudentInfoById" resultType="com.mallcloud.init.model.entity.Student">
+        select student_id     as studentId,
+               name,
+               grade,
+               student_class  as studentClass,
+               student_number as studentNumber
+        from student
+        where student_id = #{studentId}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from student
+    </select>
+</mapper>

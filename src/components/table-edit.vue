@@ -25,7 +25,6 @@
 						</el-icon>
 					</el-upload>
 					<slot :name="item.prop" v-else>
-
 					</slot>
 				</el-form-item>
 			</el-col>
@@ -42,6 +41,7 @@ import { FormOption } from '@/types/form-option';
 import { FormInstance, FormRules, UploadProps } from 'element-plus';
 import { PropType, ref } from 'vue';
 import {Plus} from "@element-plus/icons-vue";
+import { defineProps } from 'vue';
 
 const { options, formData, edit, update } = defineProps({
 	options: {
@@ -78,7 +78,10 @@ const saveEdit = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate(valid => {
 		if (!valid) return false;
-		update(form.value);
+    // 将数据传给父组件
+    update(form.value);
+
+    
 	});
 };
 

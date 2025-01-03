@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 
 interface ObjectList {
     [key: string]: string[];
@@ -46,7 +46,7 @@ export const usePermissStore = defineStore('permiss', {
                 '65',
                 '66',
             ],
-            user: [ '0',
+            user: ['0',
                 '1',
                 '11',
                 '12',

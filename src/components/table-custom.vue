@@ -74,10 +74,10 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, PropType, ref } from 'vue'
+import {toRefs, PropType, ref, watch} from 'vue'
 import {Delete, Edit, View, Refresh, Setting} from '@element-plus/icons-vue';
 import { ElMessageBox } from 'element-plus';
-
+import { defineProps } from 'vue';
 const props = defineProps({
     // 表格相关
     tableData: {
@@ -96,7 +96,7 @@ const props = defineProps({
         type: Boolean,
         default: true
     },
-    //  分页相关
+    //  相关
     hasPagination: {
         type: Boolean,
         default: true
@@ -141,7 +141,11 @@ const props = defineProps({
     changePage: {
         type: Function,
         default: () => { }
-    }
+    },
+    index: {
+        type: Number,
+        default: 1
+    },
 })
 
 let {
@@ -168,11 +172,6 @@ const handleSelectionChange = (selection: any[]) => {
     multipleSelection.value = selection
 }
 
-// 当前页码变化的事件
-const handleCurrentChange = (val: number) => {
-    props.changePage(val)
-}
-
 const handleDelete = (row) => {
     ElMessageBox.confirm('确定要删除吗？', '提示', {
         type: 'warning'
@@ -187,6 +186,10 @@ const getIndex = (index: number) => {
     return index + 1 + (currentPage.value - 1) * pageSize.value
 }
 
+// 改变页码
+const handleCurrentChange = (val: number) => {
+    props.changePage(val)
+}
 </script>
 
 <style scoped>

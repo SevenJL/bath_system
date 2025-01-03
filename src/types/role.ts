@@ -5,6 +5,6 @@ export interface Role {
     studentId: string;
     status: boolean;
     grade: string;
-    class: string;
+    studentClass: string;
     permiss: string[]
 }

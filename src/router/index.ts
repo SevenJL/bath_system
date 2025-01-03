@@ -1,6 +1,17 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import { usePermissStore } from '@/store/permiss';
 import Home from '../views/home.vue';
+import SystemStudent from '../views/system/student.vue';
+import SystemTeacher from '../views/system/teacher.vue';
+import SystemIndex from '../views/system/index.vue';
+import SystemAppointment from '../views/system/appointment.vue';
+import SystemReservation from '../views/system/reservation.vue';
+import SystemBathUseage from '../views/system/bathuseage.vue';
+
+import Login from '../views/pages/login.vue';
+import Register from '../views/pages/register.vue';
+import Forbidden from '../views/pages/403.vue';
+import NotFound from '../views/pages/404.vue';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
@@ -17,30 +28,57 @@ const routes: RouteRecordRaw[] = [
         children: [
             {
                 path: '/system-student',
-                name: 'system-user',
+                name: 'system-student',
                 meta: {
-                    title: '学生管理',
+                    title: '用户管理',
                     permiss: '11',
                 },
-                component: () => import(/* webpackChunkName: "system-user" */ '../views/system/student.vue'),
+                component: SystemStudent,
             },
             {
-                path: '/system-role',
-                name: 'system-role',
+                path: '/system-teacher',
+                name: 'system-teacher',
                 meta: {
-                    title: '角色管理',
+                    title: '老师管理',
                     permiss: '12',
                 },
-                component: () => import(/* webpackChunkName: "system-role" */ '../views/system/role.vue'),
+                component: SystemTeacher,
             },
             {
-                path: '/upload',
-                name: 'upload',
+                path: '/system-index',
+                name: 'system-index',
                 meta: {
-                    title: '上传',
-                    permiss: '22',
+                    title: '首页管理',
+                    permiss: '13',
                 },
-                component: () => import(/* webpackChunkName: "upload" */ '../views/element/upload.vue'),
+                component: SystemIndex,
+            },
+            {
+                path: '/system-appointment',
+                name: 'system-appointment',
+                meta: {
+                    title: '预约界面',
+                    permiss: '14',
+                },
+                component: SystemAppointment,
+            },
+            {
+                path: '/system-reservation',
+                name: 'system-reservation',
+                meta: {
+                    title: '预约管理',
+                    permiss: '15',
+                },
+                component: SystemReservation,
+            },
+            {
+                path: '/system-bathuseage',
+                name: 'system-bathuseage',
+                meta: {
+                    title: '使用情况',
+                    permiss: '15',
+                },
+                component: SystemBathUseage,
             },
         ],
     },
@@ -50,16 +88,23 @@ const routes: RouteRecordRaw[] = [
             title: '登录',
             noAuth: true,
         },
-        component: () => import(/* webpackChunkName: "login" */ '../views/pages/login.vue'),
+        component: Login,
     },
-
+    {
+        path: '/register',
+        meta: {
+            title: '注册',
+            noAuth: true,
+        },
+        component: Register,
+    },
     {
         path: '/403',
         meta: {
             title: '没有权限',
             noAuth: true,
         },
-        component: () => import(/* webpackChunkName: "403" */ '../views/pages/403.vue'),
+        component: Forbidden,
     },
     {
         path: '/404',
@@ -67,7 +112,7 @@ const routes: RouteRecordRaw[] = [
             title: '找不到页面',
             noAuth: true,
         },
-        component: () => import(/* webpackChunkName: "404" */ '../views/pages/404.vue'),
+        component: NotFound,
     },
     { path: '/:path(.*)', redirect: '/404' },
 ];

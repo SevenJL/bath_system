@@ -38,7 +38,11 @@ const props = defineProps({
 	search: {
 		type: Function,
 		default: () => { }
-	}
+	},
+  resetForm: {
+    type: Function,
+    default: () => { }
+  }
 });
 
 const searchRef = ref<FormInstance>();

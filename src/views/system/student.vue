@@ -2,7 +2,6 @@
   <div>
     <TableSearch :query="query" :options="searchOpt" :search="handleSearch" :reset-form="resetForm"/>
     <div class="container">
-
       <TableCustom :columns="columns" :tableData="tableData" :total="page.total" :viewFunc="handleView"
                    :delFunc="handleDelete" :changePage="changePage" :editFunc="handleEdit" :currentPage="page.index">
         <template #toolbarBtn>

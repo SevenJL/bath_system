@@ -2,11 +2,10 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import { usePermissStore } from '@/store/permiss';
 import Home from '../views/home.vue';
 import SystemStudent from '../views/system/student.vue';
-import SystemTeacher from '../views/system/teacher.vue';
 import SystemIndex from '../views/pages/index.vue';
-import SystemAppointment from '../views/user/appointment.vue';
 import SystemReservation from '../views/system/reservation.vue';
 import SystemBathUseage from '../views/system/bathuseage.vue';
+import SystemFeedback from '../views/system/feedback.vue';
 
 import Login from '../views/pages/login.vue';
 import Register from '../views/pages/register.vue';
@@ -53,16 +52,16 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: SystemBathUseage,
             },
+            {
+                path: '/system-feedback',
+                name: 'system-feedback',
+                meta: {
+                    title: '反馈管理',
+                    permiss: '16',
+                },
+                component: SystemFeedback,
+            },
         ],
-    },
-    {
-        path: '/user-appointment',
-        name: 'user-appointment',
-        meta: {
-            title: '预约界面',
-            permiss: '14',
-        },
-        component: SystemAppointment,
     },
     {
         path: '/login',

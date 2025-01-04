@@ -20,4 +20,10 @@ export const menuData: Menus[] = [
         index: '/system-bathuseage',
         title: '使用情况',
     },
+    {
+        id: '16',
+        pid: '1',
+        index: '/system-feedback',
+        title: '反馈管理',
+    },
 ];

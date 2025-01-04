@@ -112,3 +112,29 @@ export function getChartInfo() {
         method: 'get',
     });
 }
+
+// 提交反馈信息
+export function submitFeedback(data) {
+    return request({
+        url: '/api/feedback/submit',
+        method: 'post',
+        data
+    });
+}
+
+// 获取所有的分页获取反馈信息
+export function getAllFeedback(data: PageParams) {
+    return request({
+        url: '/api/feedback/page',
+        method: 'post',
+        data
+    });
+}
+
+// 删除反馈信息
+export function deleteFeedback(id) {
+    return request({
+        url: `/api/feedback/${id}`,
+        method: 'delete',
+    });
+}

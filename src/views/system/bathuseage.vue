@@ -23,9 +23,11 @@ const fetchData = async () => {
     // 获取后端数据
     const res = await getChartInfo();
     const rawData = res.data;
+    console.log(rawData)
 
     if (rawData.code !== 200) {
-      throw new Error(rawData.message || '获取数据失败');
+      ElMessage.error(res.data.message)
+      return;
     }
 
     // 后端数据中的 usage 数据
@@ -54,7 +56,6 @@ const fetchData = async () => {
 
     ElMessage.success('数据刷新成功');
   } catch (error) {
-    console.error('数据刷新失败:', error);
     ElMessage.error(error.message || '数据刷新失败');
   }
 };

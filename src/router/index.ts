@@ -3,8 +3,8 @@ import { usePermissStore } from '@/store/permiss';
 import Home from '../views/home.vue';
 import SystemStudent from '../views/system/student.vue';
 import SystemTeacher from '../views/system/teacher.vue';
-import SystemIndex from '../views/system/index.vue';
-import SystemAppointment from '../views/system/appointment.vue';
+import SystemIndex from '../views/pages/index.vue';
+import SystemAppointment from '../views/user/appointment.vue';
 import SystemReservation from '../views/system/reservation.vue';
 import SystemBathUseage from '../views/system/bathuseage.vue';
 
@@ -19,7 +19,7 @@ import 'nprogress/nprogress.css';
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
-        redirect: '/system-student',
+        redirect: '/index',
     },
     {
         path: '/',
@@ -30,37 +30,10 @@ const routes: RouteRecordRaw[] = [
                 path: '/system-student',
                 name: 'system-student',
                 meta: {
-                    title: '用户管理',
+                    title: '学生管理',
                     permiss: '11',
                 },
                 component: SystemStudent,
-            },
-            {
-                path: '/system-teacher',
-                name: 'system-teacher',
-                meta: {
-                    title: '老师管理',
-                    permiss: '12',
-                },
-                component: SystemTeacher,
-            },
-            {
-                path: '/system-index',
-                name: 'system-index',
-                meta: {
-                    title: '首页管理',
-                    permiss: '13',
-                },
-                component: SystemIndex,
-            },
-            {
-                path: '/system-appointment',
-                name: 'system-appointment',
-                meta: {
-                    title: '预约界面',
-                    permiss: '14',
-                },
-                component: SystemAppointment,
             },
             {
                 path: '/system-reservation',
@@ -83,12 +56,29 @@ const routes: RouteRecordRaw[] = [
         ],
     },
     {
+        path: '/user-appointment',
+        name: 'user-appointment',
+        meta: {
+            title: '预约界面',
+            permiss: '14',
+        },
+        component: SystemAppointment,
+    },
+    {
         path: '/login',
         meta: {
             title: '登录',
             noAuth: true,
         },
         component: Login,
+    },
+    {
+        path: '/index',
+        meta: {
+            title: '首页管理',
+            permiss: '13',
+        },
+        component: SystemIndex,
     },
     {
         path: '/register',

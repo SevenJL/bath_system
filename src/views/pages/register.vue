@@ -23,10 +23,30 @@
           <el-input v-model="param.email" placeholder="邮箱">
             <template #prepend>
               <el-icon>
-                <Mail />
+                <Lock/>
               </el-icon>
             </template>
           </el-input>
+        </el-form-item>
+
+        <!-- 姓名 -->
+        <el-form-item prop="name">
+          <el-input v-model="param.name" placeholder="姓名"></el-input>
+        </el-form-item>
+
+        <!-- 学号 -->
+        <el-form-item prop="studentId">
+          <el-input v-model="param.studentId" placeholder="学号"></el-input>
+        </el-form-item>
+
+        <!-- 班级 -->
+        <el-form-item prop="class">
+          <el-input v-model="param.class" placeholder="班级"></el-input>
+        </el-form-item>
+
+        <!-- 年级 -->
+        <el-form-item prop="grade">
+          <el-input v-model="param.grade" placeholder="年级"></el-input>
         </el-form-item>
 
         <!-- 密码 -->
@@ -111,23 +131,26 @@ import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
-import { Lock, User } from '@element-plus/icons-vue'; // 引入 Mail 图标
-import { getVerifyCode, registerUser } from '@/api'; // 确保 registerUser 接口已实现
+import { Lock, User } from '@element-plus/icons-vue';
+import { getVerifyCode, registerUser } from '@/api';
 
 // 验证码是否显示
 const verifyCodeVisible = ref(false);
-const verifyCodeSrc = ref(''); // 存储验证码图片的 src
+const verifyCodeSrc = ref('');
 
 // 注册信息接口
 interface RegisterInfo {
   username: string;
   email: string;
+  name: string;
+  studentId: string;
+  class: string;
+  grade: string;
   password: string;
   checkPassword: string;
   captcha: string;
 }
 
-// 从 LocalStorage 中读取存储信息（若有）
 const regStr = localStorage.getItem('register-param');
 const defParam = regStr ? JSON.parse(regStr) : null;
 const checked = ref(!!regStr);
@@ -137,9 +160,13 @@ const router = useRouter();
 
 // 表单数据
 const param = reactive<RegisterInfo>({
-  username: defParam ? defParam.username : '',
+  userAccount: defParam ? defParam.username : '',
   email: defParam ? defParam.email : '',
-  password: defParam ? defParam.password : '',
+  name: defParam ? defParam.name : '',
+  studentId: defParam ? defParam.studentId : '',
+  className: defParam ? defParam.class : '',
+  grade: defParam ? defParam.grade : '',
+  userPassword: defParam ? defParam.password : '',
   checkPassword: defParam ? defParam.checkPassword : '',
   captcha: '',
 });
@@ -156,6 +183,18 @@ const rules: FormRules = {
   email: [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
     { type: 'email', message: '请输入正确的邮箱格式', trigger: ['blur', 'change'] },
+  ],
+  name: [
+    { required: true, message: '请输入姓名', trigger: 'blur' },
+  ],
+  studentId: [
+    { required: true, message: '请输入学号', trigger: 'blur' },
+  ],
+  class: [
+    { required: true, message: '请输入班级', trigger: 'blur' },
+  ],
+  grade: [
+    { required: true, message: '请输入年级', trigger: 'blur' },
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
@@ -180,7 +219,7 @@ const rules: FormRules = {
 // 提交表单
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-
+  console.log('提交表单:', param)
   try {
     await formEl.validate();
   } catch (error) {
@@ -191,12 +230,17 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   // 组织后端所需的注册参数
   const userRegisterRequest = {
     userAccount: param.username,
+    email: param.email,
+    name: param.name,
+    studentNumber: param.studentId,
+    studentClass: param.class,
+    grade: param.grade,
     userPassword: param.password,
     checkPassword: param.checkPassword,
-    email: param.email,
     captcha: param.captcha,
   };
 
+  console.log('注册参数:', userRegisterRequest)
   try {
     // 调用后端注册接口
     const response = await registerUser(userRegisterRequest);
@@ -307,31 +351,31 @@ getCodeImage();
 }
 
 .verify-code-item {
-  margin-bottom: 20px; /* 适配整体间距 */
+  margin-bottom: 20px;
 }
 
 .verify-code-container {
   margin-bottom: 20px;
-  display: flex; /* 使用 flex 布局排列子元素 */
-  align-items: center; /* 垂直居中 */
-  gap: 10px; /* 设置子元素之间的间距 */
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .verify-input {
   width: 110px;
   margin-right: 10px;
-  flex: 1; /* 输入框宽度自适应 */
+  flex: 1;
 }
 
 .verify-btn {
-  white-space: nowrap; /* 防止按钮内容换行 */
+  white-space: nowrap;
 }
 
 .verify-code-img {
-  height: 40px; /* 设置验证码图片高度 */
-  width: 100px; /* 宽度自适应 */
-  border: 1px solid #dcdfe6; /* 图片边框 */
-  border-radius: 4px; /* 图片圆角 */
-  cursor: pointer; /* 鼠标移上变为手型 */
+  height: 40px;
+  width: 100px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  cursor: pointer;
 }
 </style>

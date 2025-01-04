@@ -25,7 +25,6 @@
                   placeholder="选择时间段"
               ></el-time-select>
             </el-form-item>
-
             <!-- 提交按钮 -->
             <el-form-item>
               <el-button type="primary" @click="handleSubmit">提交预约</el-button>
@@ -114,15 +113,7 @@ export default {
         ElMessage.error(res.data.message);
       }
     },
-    async handleCheckin() {
-      const loginParam = JSON.parse(localStorage.getItem("user_info") || "{}");
-      const res = await signIn(loginParam.userId);
-      if (res.data.code === 200) {
-        ElMessage.success(res.data.message);
-      } else {
-        ElMessage.error(res.data.message);
-      }
-    },
+
   },
 };
 </script>

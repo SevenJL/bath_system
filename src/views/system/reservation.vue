@@ -11,7 +11,7 @@
           :currentPage="page.index"
       >
         <template #toolbarBtn>
-          <el-button type="warning" :icon="CirclePlusFilled" @click="getData">刷新</el-button>
+          <el-button type="warning" :icon="CirclePlusFilled" @click="flushData">刷新</el-button>
         </template>
         <template #status="{ rows }">
           <el-tag type="warning" v-if="rows.status === 'pending'">待确认</el-tag>
@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import {ref, reactive} from 'vue';
 import {ElMessage} from 'element-plus';
-import {getReservations, deleteReservation, confirmReservation} from '@/api';
+import {getReservations, deleteReservation, confirmReservationMethod} from '@/api';
 import {CirclePlusFilled} from '@element-plus/icons-vue';
 import TableCustom from "@/components/table-custom.vue";
 import TableSearch from "@/components/table-search.vue";
@@ -117,6 +117,12 @@ const getData = async () => {
 };
 getData();
 
+// 刷新数据
+const flushData = () => {
+  getData();
+  ElMessage.success("刷新成功")
+}
+
 // 分页
 const changePage = (val: number) => {
   page.index = val;
@@ -125,6 +131,11 @@ const changePage = (val: number) => {
 
 // 删除预约记录
 const handleDelete = async (row: any) => {
+  console.log(row)
+  if (row.status === 'confirmed') {
+    ElMessage.warning('已确认预约无法删除');
+    return;
+  }
   const res = await deleteReservation(row.reservationId);
   if (res.data.code !== 200) {
     ElMessage.error('删除失败');
@@ -136,7 +147,7 @@ const handleDelete = async (row: any) => {
 
 // 确认预约
 const confirmReservation = async (row: any) => {
-  const res = await confirmReservation(row.reservationId);
+  const res = await confirmReservationMethod(row.reservationId);
   if (res.data.code !== 200) {
     ElMessage.error('确认失败');
     return;
@@ -144,6 +155,7 @@ const confirmReservation = async (row: any) => {
   ElMessage.success('确认成功');
   await getData();
 };
+
 // 格式化时间
 const formatDateTime = (datetime) => {
   const date = new Date(datetime);

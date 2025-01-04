@@ -178,9 +178,14 @@ public class UserController {
         String checkPassword = userRegisterRequest.getCheckPassword();
         String email = userRegisterRequest.getEmail();
         String captcha = userRegisterRequest.getCaptcha();
+        String name = userRegisterRequest.getName();
+        String studentNumber = userRegisterRequest.getStudentNumber();
+        String grade = userRegisterRequest.getGrade();
+        String studentClass = userRegisterRequest.getStudentClass();
 
         // 判断参数是否为空
-        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword, captcha,email)) {
+        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword, captcha,email
+                ,name,studentNumber,grade,studentClass)) {
             throw new BusinessException(PARAMS_ERROR);
         }
         // 判断两次密码是否一致
@@ -198,7 +203,7 @@ public class UserController {
             return ResultUtils.error(ErrorCode.NOT_FOUND_ERROR,"验证码错误");
         }
         // 注册用户
-        Boolean result = userService.userRegister(userAccount,userPassword,email);
+        Boolean result = userService.userRegister(userRegisterRequest);
 
         return ResultUtils.success(result);
     }

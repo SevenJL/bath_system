@@ -70,10 +70,6 @@ public class SignInServiceImpl implements SignInService {
         LocalDate today = LocalDate.now();
 
         // 查询今天的数据
-        List<SignIn> signIns = signInMapper.getDataByDate(today);
-        if (signIns.isEmpty()) {
-            throw new RuntimeException("今天没有查询到数据");
-        }
-        return signInMapper.getAllData();
+        return signInMapper.getDataByDate(today);
     }
 }

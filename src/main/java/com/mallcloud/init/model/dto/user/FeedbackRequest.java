@@ -1,6 +1,5 @@
 package com.mallcloud.init.model.dto.user;
 
-import com.mallcloud.init.model.enums.FEEDBACKTYPE;
 import lombok.Getter;
 
 
@@ -9,8 +8,11 @@ import lombok.Getter;
  */
 @Getter
 public class FeedbackRequest {
+    // 反馈人ID
+    private String userId;
+
     // 反馈类型
-    private FEEDBACKTYPE feedbackType;
+    private String feedbackType;
 
     // 反馈内容
     private String feedbackText;

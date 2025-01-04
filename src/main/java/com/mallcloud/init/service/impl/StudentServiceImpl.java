@@ -7,6 +7,7 @@ import com.mallcloud.init.model.dto.StudentUpdateDTO;
 import com.mallcloud.init.model.entity.Student;
 import com.mallcloud.init.service.StudentService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,6 +22,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     @Resource
     private StudentMapper studentMapper;
 
+    @Resource
+    private UserServiceImpl userService;
+
     @Override
     public List<Student> getStudentsByPage(int page, int size) {
         // 1. 计算偏移量
@@ -30,11 +34,22 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     }
 
     @Override
+    @Transactional
     public boolean deleteStudentById(Long id) {
         // 1. 校验参数
         if (id == null || id <= 0) {
             return false;
         }
+        // 从数据库查询出studentNumber
+        Student student = studentMapper.getStudentInfoById(id);
+        if (student == null) {
+            return false;
+        }
+        if (student.getStudentNumber() == null || student.getStudentNumber().isEmpty()) {
+            return false;
+        }
+        String studentNumber = student.getStudentNumber();
+        userService.deleteUserByStudentNumber(studentNumber);
         // 2. 进行删除
         return studentMapper.deleteStudentById(id) > 0;
     }

@@ -49,7 +49,15 @@ public interface UserMapper extends BaseMapper<User> {
     /**
      * 用户注册
      */
-    Boolean userRegister(String userAccount, String hashPassword, String email);
+    Boolean userRegister(String userAccount,
+                         String hashPassword,
+                         String email,
+                         String studentNumber);
+
+    /**
+     * 根据学号删除用户
+     */
+    void deleteUserByStudentNumber(String studentNumber);
 }
 
 

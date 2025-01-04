@@ -1,11 +1,15 @@
 package com.mallcloud.init.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.crypto.digest.MD5;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mallcloud.init.common.ErrorCode;
 import com.mallcloud.init.exception.BusinessException;
 import com.mallcloud.init.mapper.CaptchaMapper;
+import com.mallcloud.init.mapper.StudentMapper;
 import com.mallcloud.init.mapper.UserMapper;
+import com.mallcloud.init.model.dto.user.UserRegisterRequest;
+import com.mallcloud.init.model.entity.Student;
 import com.mallcloud.init.model.entity.User;
 import com.mallcloud.init.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserMapper userMapper;
 
     @Resource
-    private CaptchaMapper captchaMapper;
+    private StudentMapper studentMapper;
 
     @Override
     public List<User> getUsersByPage(int page, int size) {
@@ -79,6 +83,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Transactional
     public boolean deleteUserById(Long id) {
         // 1. 校验参数
         if (id == null || id <= 0) {
@@ -95,15 +100,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
-    public Boolean userRegister(String userAccount, String userPassword, String email) {
-        // 校验是否为空
-        if (StringUtils.isAnyBlank(userAccount, userPassword,email)) {
-            throw new BusinessException(PARAMS_ERROR);
+    @Transactional
+    public Boolean userRegister(UserRegisterRequest userRegisterRequest) {
+        String userPassword = userRegisterRequest.getUserPassword();
+        String email = userRegisterRequest.getEmail();
+        String userAccount = userRegisterRequest.getUserAccount();
+        Student student = new Student();
+        BeanUtil.copyProperties(userRegisterRequest, student);
+        int insert = studentMapper.insert(student);
+        if (insert <= 0) {
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "注册失败");
         }
         // 对密码进行哈希加密
         String hashPassword = MD5.create().digestHex(userPassword);
-        log.info("加密后的password = {}", hashPassword);
-        return userMapper.userRegister(userAccount, hashPassword,email);
+        String studentNumber = userRegisterRequest.getStudentNumber();
+        if (studentNumber == null || studentNumber.isEmpty()) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "学号不能为空");
+        }
+        return userMapper.userRegister(userAccount, hashPassword,email,studentNumber);
     }
 
     @Override
@@ -134,5 +148,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
         return currentUser;
+    }
+
+    @Override
+    public void deleteUserByStudentNumber(String studentNumber) {
+        userMapper.deleteUserByStudentNumber(studentNumber);
     }
 }

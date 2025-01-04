@@ -44,7 +44,7 @@ public interface ReservationMapper extends BaseMapper<Reservation> {
     @Delete("DELETE FROM reservations WHERE reservation_id = #{reservationId}")
     void deleteReservation(int reservationId);
 
-    @Select("SELECT * FROM reservations LIMIT #{offset}, #{size}")
+    @Select("SELECT * FROM reservations order by status LIMIT #{offset}, #{size} ")
     List<Reservation> getReservationByPage(int offset, int size);
 
     @Select("SELECT COUNT(*) FROM reservations")

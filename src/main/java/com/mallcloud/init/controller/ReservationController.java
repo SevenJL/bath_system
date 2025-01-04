@@ -16,9 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 预约控制器
@@ -54,6 +52,18 @@ public class ReservationController {
             return ResultUtils.error(ErrorCode.OPERATION_ERROR);
         }
         return ResultUtils.success(reservation);
+    }
+
+    /**
+     * 确认预约
+     */
+    @PutMapping("/{id}/confirm")
+    public BaseResponse confirmReservation(@PathVariable("id") Integer reservationId) {
+        if (reservationId == null) {
+            return ResultUtils.error(ErrorCode.PARAMS_ERROR);
+        }
+        reservationService.confirmReservation(reservationId);
+        return ResultUtils.success("更新成功");
     }
 
     /**

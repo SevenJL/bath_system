@@ -12,11 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @author Admin
@@ -122,5 +120,10 @@ public class ReservationServiceImpl  extends ServiceImpl<ReservationMapper, Rese
     @Override
     public List<Reservation> getAllDataList() {
         return reservationMapper.getAllDataList();
+    }
+
+    @Override
+    public void confirmReservation(Integer reservationId) {
+        reservationMapper.updateStatus(reservationId, ReservationEnum.CONFIRMED);
     }
 }

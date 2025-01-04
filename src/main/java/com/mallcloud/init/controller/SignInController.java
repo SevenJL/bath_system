@@ -55,7 +55,7 @@ public class SignInController {
     public BaseResponse classifyByTime() {
         List<SignIn> signInList = signInService.getAllData();
         if (signInList == null || signInList.isEmpty()) {
-            return ResultUtils.error(ErrorCode.OPERATION_ERROR);
+            return ResultUtils.error(ErrorCode.OPERATION_ERROR, "没有签到数据");
         }
         Map<String, Integer> stringIntegerMap = TimeClassifierUtil.classifySignInsByTime(signInList);
         if (stringIntegerMap.isEmpty()) {

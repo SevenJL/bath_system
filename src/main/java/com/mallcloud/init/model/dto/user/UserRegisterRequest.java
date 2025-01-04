@@ -11,11 +11,19 @@ public class UserRegisterRequest {
 
     private String userAccount;
 
+    private String email;
+
+    private String name;
+
+    private String studentNumber;
+
+    private String studentClass;
+
+    private String grade;
+
     private String userPassword;
 
     private String checkPassword;
-
-    private String email;
 
     private String captcha;
 

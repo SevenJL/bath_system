@@ -1,6 +1,7 @@
 package com.mallcloud.init.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mallcloud.init.model.dto.user.UserRegisterRequest;
 import com.mallcloud.init.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +41,7 @@ public interface UserService extends IService<User> {
     /**
      * 用户注册
      */
-    Boolean userRegister(String userAccount, String userPassword, String email);
+    Boolean userRegister(UserRegisterRequest userRegisterRequest);
 
     /**
      * 根据用户名查询用户
@@ -53,4 +54,10 @@ public interface UserService extends IService<User> {
      * @return
      */
     User getLoginUser(HttpServletRequest request);
+
+    /**
+     * 根据学号删除用户
+     */
+    void deleteUserByStudentNumber(String studentNumber);
+
 }

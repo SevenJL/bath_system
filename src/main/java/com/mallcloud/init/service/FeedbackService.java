@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.mallcloud.init.model.dto.user.FeedbackRequest;
 import com.mallcloud.init.model.entity.Feedback;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -15,11 +14,25 @@ public interface FeedbackService extends IService<Feedback> {
     /**
      * 提交反馈
      */
-    Boolean submitFeedback(FeedbackRequest feedbackRequest, HttpServletRequest request);
+    Boolean submitFeedback(FeedbackRequest feedbackRequest);
 
     /**
      * 获取所有反馈
      */
     List<Feedback> getAllFeedback();
 
+    /**
+     * 获取所有反馈
+     */
+    List<Feedback> getAllFeedbackByPage(int page, int size);
+
+    /**
+     * 获取反馈总数
+     */
+    Integer getCounts();
+
+    /**
+     * 删除反馈
+     */
+    boolean deleteFeedbackById(Long id);
 }

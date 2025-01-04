@@ -52,4 +52,8 @@ public interface ReservationService  extends IService<Reservation> {
      */
     List<Reservation> getAllDataList();
 
+    /**
+     * 确认预约
+     */
+    void confirmReservation(Integer reservationId);
 }
